@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIDS - Real-Time Network Intrusion Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-area">
+            <h1>🛡️ NIDS Dashboard</h1>
+            <span class="badge" id="mode-badge">Simulated Mode</span>
+        </div>
+        <div class="nav-controls">
+            <button class="btn btn-primary" onclick="triggerSimulation('port_scan')">Simulate Port Scan</button>
+            <button class="btn btn-warning" onclick="triggerSimulation('syn_flood')">Simulate SYN Flood</button>
+            <button class="btn btn-success" onclick="triggerSimulation('normal_traffic')">Generate Normal Traffic</button>
+            <button class="btn btn-danger" onclick="clearData()">Clear Demo Data</button>
+            <button class="btn btn-secondary" onclick="refreshDashboard()">Refresh</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Summary Cards -->
+        <section class="card-grid">
+            <div class="stat-card">
+                <h3>Total Monitored Events</h3>
+                <p id="stat-total">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Unique IP Addresses</h3>
+                <p id="stat-unique-ips">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Threats</h3>
+                <p id="stat-active">0</p>
+            </div>
+            <div class="stat-card alert-card">
+                <h3>High-Severity Alerts</h3>
+                <p id="stat-high">0</p>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="section panel">
+            <h2>Threat & Event Timeline</h2>
+            <div class="chart-container">
+                <canvas id="eventChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Tables / Suspicious IPs -->
+        <div class="grid-two-column">
+            <section class="section panel">
+                <h2>Security Alerts Feed</h2>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Source IP</th>
+                                <th>Destination IP</th>
+                                <th>Attack Type</th>
+                                <th>Severity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts-tbody">
+                            <tr><td colspan="6" class="text-center">Loading alerts or awaiting events...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="flex-column">
+                <section class="section panel">
+                    <h2>Suspicious IP Addresses</h2>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Source IP</th>
+                                    <th>Attack Count</th>
+                                    <th>Max Severity</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suspicious-tbody">
+                                <tr><td colspan="3" class="text-center">No suspicious IPs flagged.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="section panel">
+                    <h2>System Status & Capture</h2>
+                    <div class="status-box">
+                        <p><strong>Capture Engine Status:</strong> <span id="capture-status-text">Simulated / Inactive</span></p>
+                        <div class="capture-controls">
+                            <button class="btn btn-primary btn-sm" onclick="startLiveCapture()">Start Live Capture</button>
+                            <button class="btn btn-danger btn-sm" onclick="stopLiveCapture()">Stop Live Capture</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Network Intrusion Detection System (NIDS) &bull; Academic Faculty Review Project</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
